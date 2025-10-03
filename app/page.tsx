@@ -4,7 +4,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClientComponentClient, Session } from '@supabase/auth-helpers-nextjs';
-import { FiMenu } from 'react-icons/fi'; // A menu icon
 import { FcGoogle } from 'react-icons/fc';
 
 export default function Home() {
