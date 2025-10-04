@@ -1,27 +1,30 @@
 // app/components/CreateSessionModal.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { XMarkIcon, ClipboardDocumentIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { nanoid } from 'nanoid'; // A library for generating unique IDs
 
 // You'll need to install nanoid: npm install nanoid
 
+type SessionType = 'markdown' | 'pixel-art' | 'whiteboard';
+
 interface CreateSessionModalProps {
+  sessionType: SessionType; // Receive the type as a prop
   onClose: () => void;
 }
 
-export default function CreateSessionModal({ onClose }: CreateSessionModalProps) {
+export default function CreateSessionModal({ sessionType, onClose }: CreateSessionModalProps) {
   const router = useRouter();
   const [sessionName, setSessionName] = useState('');
   const [inviteCode, setInviteCode] = useState('');
   const [hasCopied, setHasCopied] = useState(false);
 
   // Generate a unique invite code when the component mounts
-  useState(() => {
+  useEffect(() => {
     setInviteCode(nanoid(10)); // Generates a 10-character unique ID
-  });
+  }, []);
 
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(inviteCode);
@@ -30,13 +33,11 @@ export default function CreateSessionModal({ onClose }: CreateSessionModalProps)
   };
 
   const handleCreateSession = () => {
-    // In a real app, you would save the sessionName and inviteCode to your database here.
-    // For example:
-    // await supabase.from('sessions').insert({ name: sessionName, code: inviteCode, type: 'markdown' });
-    
-    // Then, navigate to the editor page with the new session code
-    router.push(`/editor/markdown/${inviteCode}`);
+
+    router.push(`/editor/${sessionType}/${inviteCode}`);
   };
+
+  const title = sessionType.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
 
   return (
     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 flex justify-center items-center">
@@ -45,7 +46,7 @@ export default function CreateSessionModal({ onClose }: CreateSessionModalProps)
           <XMarkIcon className="w-6 h-6" />
         </button>
 
-        <h3 className="text-2xl font-bold text-slate-800">New Markdown Session</h3>
+        <h3 className="text-2xl font-bold text-slate-800">New {title} Session</h3>
         <p className="text-slate-500 mt-1">Name your session and share the code to collaborate.</p>
 
         <div className="mt-6">
