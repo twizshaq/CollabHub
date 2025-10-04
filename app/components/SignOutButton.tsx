@@ -18,7 +18,7 @@ export default function SignOutButton() {
   return (
     <button
       onClick={handleSignOut}
-      className="flex items-center gap-2 py-2 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors"
+      className="flex items-center gap-2 py-2 px-4 border border-red-300 bg-red-300/20 rounded-xl text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors w-[100%] text-red-500"
     >
       <IoLogOutOutline size={20} />
       Sign Out
